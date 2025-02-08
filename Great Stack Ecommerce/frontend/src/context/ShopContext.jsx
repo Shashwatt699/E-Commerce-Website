@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { products } from "../assets/assets";
-import {toast} from  "react-toastify";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const ShopContext = createContext();
 
@@ -8,68 +9,86 @@ const ShopContextProvider = (props) => {
 
     const currency = '$';
     const delivery_fee = 10;
-    const [search , setSearch] = useState('');
-    const [showSearch , setShowSearch] = useState(false);
-    const [cartItems , setCartItems] = useState({});
+    const [search, setSearch] = useState('');
+    const [showSearch, setShowSearch] = useState(false);
+    const [cartItems, setCartItems] = useState({});
+    const navigate = useNavigate();
 
-    const addToCart = async (itemId,size) =>{
+    const addToCart = async (itemId, size) => {
 
-        if(!size){
+        if (!size) {
             toast.error('Select Product Size');
             return;
         }
 
         let cartData = structuredClone(cartItems);
 
-        if(cartData[itemId]){
-            if(cartData[itemId][size]){
-                cartData[itemId][size] += 1;
+        if (cartData[itemId]) {
+            if (cartData[itemId][size]) {
+                cartData[itemId][size] += 1; //If Size exists Add 1 in quantity
             }
-            else{
-                cartData[itemId][size] = 1;
+            else {
+                cartData[itemId][size] = 1; //If size does not exist in the cart initialize it with 1
             }
         }
-        else{
-            cartData[itemId]={};
-            cartData[itemId][size] = 1;
+        else {
+            cartData[itemId] = {};  //Create new Entry for a new item id
+            cartData[itemId][size] = 1; // If the itemId does not exist in the cart
         }
         setCartItems(cartData);
-        
     }
 
-   const getCartCount = () => {
-        let totalCount = 0;
-        for(const items in cartItems){
-            for(const item in cartItems[items]){
+    const getCartCount = () => {
+        let totalCount = 0; //Start with a total count of 0.
+        for (const items in cartItems) { // Iterate over each itemId in cartItems.
+            for (const item in cartItems[items]) { // Iterate over each size for the current itemId.
                 try {
-                    if (cartItems[items][item] > 0) {
-                        totalCount += cartItems[items][item];
+                    if (cartItems[items][item] > 0) { //If the quantity for the current size is greater than 0, 
+                        totalCount += cartItems[items][item];// add it to totalCount.
                     }
-                } catch (error) {
-                    
+                } catch (error) {// The try-catch block is used to handle any potential errors (e.g., if cartItems[items][item] is not a number).
+
                 }
             }
         }
         console.log(totalCount);
         return totalCount;
-   }
+    }
 
-   const updateQuantity = async (itemId,size,quantity) => {
+    const updateQuantity = async (itemId, size, quantity) => {
         let cartData = structuredClone(cartItems);
 
         cartData[itemId][size] = quantity;
 
         setCartItems(cartData);
-   }
- 
-    const value = {
-        products , currency , delivery_fee , 
-        search,setSearch,showSearch,setShowSearch,
-        cartItems,addToCart,
-        getCartCount , updateQuantity
     }
 
-    return(
+    const getCartAmount = () => {
+        let totalAmount = 0;
+        for (const items in cartItems) {
+            let itemInfo = products.find((product) => product._id === items)
+            for (const item in cartItems[items]) {
+                try {
+                    if (cartItems[items][item] > 0) {
+                        totalAmount += itemInfo.price * cartItems[items][item];
+                    }
+                } catch (error) {
+
+                }
+            }
+        }
+        return totalAmount;
+    }
+
+    const value = {
+        products, currency, delivery_fee,
+        search, setSearch, showSearch, setShowSearch,
+        cartItems, addToCart,
+        getCartCount, updateQuantity,
+        getCartAmount, navigate
+    }
+
+    return (
         <ShopContext.Provider value={value}>
             {props.children}
         </ShopContext.Provider>

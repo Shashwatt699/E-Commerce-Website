@@ -31,7 +31,7 @@ const Add = ({ token }) => {
       formData.append("price", price)
       formData.append("category", category)
       formData.append("subCategory", subCategory)
-      formData.append("besseller", bestseller)
+      formData.append("bestseller", bestseller)
       formData.append("sizes", JSON.stringify(sizes))
 
       image1 && formData.append("image1", image1)
@@ -41,7 +41,7 @@ const Add = ({ token }) => {
 
       const response = await axios.post(backendUrl + "/api/product/add", formData, { headers: { token } })
 
-      if(response.data.success){
+      if (response.data.success) {
         toast.success(response.data.message)
         setName('')
         setDescription('')
@@ -50,14 +50,14 @@ const Add = ({ token }) => {
         setImage3(false)
         setImage4(false)
         setPrice('')
-      }else{
+      } else {
         toast.error(response.data.message)
       }
 
 
     } catch (error) {
       console.log(error)
-      toast.error(error.message)     
+      toast.error(error.message)
     }
   }
 
@@ -154,7 +154,7 @@ const Add = ({ token }) => {
 
       <div className='flex gap-2 mt-2' >
         <input onChange={() => setBestseller(prev => !prev)} checked={bestseller} type="checkbox" id="bestseller" />
-        <label className='cursor-pointer ' htmlFor="bestseller">Add to BestSeller</label>
+        <label className='cursor-pointer' htmlFor="bestseller">Add to BestSeller</label>
       </div>
 
       <button type="submit" className=' cursor-pointer w-28 py-3 mt-4 bg-black text-white'>ADD</button>

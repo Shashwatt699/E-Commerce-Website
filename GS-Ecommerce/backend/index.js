@@ -16,9 +16,9 @@ connectCloudinary()
 
 // middlewares
 app.use(express.json())
-app.use(cors(
-    origin = process.env.FRONTEND_URL,
-))
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+}))
 
 // Api endpoints
 app.use('/api/user', userRouter)
@@ -28,7 +28,7 @@ app.use('/api/order', orderRouter)
 
 app.get('/', (req, res) => {
     console.log("helloo");
-    
+
     res.send("API Working")
 })
 

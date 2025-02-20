@@ -10,7 +10,7 @@ import orderRouter from './routes/orderRoute.js'
 
 // App Config
 const app = express()
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 10000
 connectDB()
 connectCloudinary()
 
@@ -25,7 +25,7 @@ app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
 app.get('/', (req, res) => {
-    console.log("heelooo");
+    console.log("helloo");
     
     res.send("API Working")
 })

@@ -16,19 +16,28 @@ connectCloudinary()
 
 // middlewares
 app.use(express.json())
+
+const cors = require('cors');
+
+const allowedOrigins = [
+  "https://e-commerce-website-frontend-0ofq.onrender.com",
+  "https://ecom-admin-panel-g6ke.onrender.com"
+];
+
 const corsOptions = {
-    origin: "https://e-commerce-website-frontend-0ofq.onrender.com", // Specify your frontend URL
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true // If you need to include credentials (like cookies)
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true
 };
 
-const corsOptions2 = {
-    origin: "https://ecom-admin-panel-g6ke.onrender.com", // Specify your Admin frontend URL
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true // If you need to include credentials (like cookies)
-};
+app.use(cors(corsOptions));
 
-app.use(cors());
 
 // Api endpoints
 app.use('/api/user', userRouter)

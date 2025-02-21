@@ -16,11 +16,13 @@ connectCloudinary()
 
 // middlewares
 app.use(express.json())
-app.use(cors({
-    origin: [process.env.FRONTEND_URL , 'http://localhost:9000'] ,
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true
-}))
+const corsOptions = {
+    origin: "https://e-commerce-website-frontend-0ofq.onrender.com", // Specify your frontend URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true // If you need to include credentials (like cookies)
+};
+
+app.use(cors());
 
 // Api endpoints
 app.use('/api/user', userRouter)

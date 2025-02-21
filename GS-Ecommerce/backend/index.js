@@ -22,7 +22,13 @@ const corsOptions = {
     credentials: true // If you need to include credentials (like cookies)
 };
 
-app.use(cors(corsOptions));
+const corsOptions2 = {
+    origin: "https://ecom-admin-panel-g6ke.onrender.com", // Specify your frontend URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true // If you need to include credentials (like cookies)
+};
+
+app.use(cors(corsOptions , corsOptions2));
 
 // Api endpoints
 app.use('/api/user', userRouter)

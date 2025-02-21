@@ -28,7 +28,7 @@ const corsOptions2 = {
     credentials: true // If you need to include credentials (like cookies)
 };
 
-app.use();
+app.use(cors());
 
 // Api endpoints
 app.use('/api/user', userRouter)

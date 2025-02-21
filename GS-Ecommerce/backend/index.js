@@ -10,7 +10,7 @@ import orderRouter from './routes/orderRoute.js'
 
 // App Config
 const app = express()
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 10000
 connectDB()
 connectCloudinary()
 
@@ -24,13 +24,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: allowedOrigins ,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true
 };
